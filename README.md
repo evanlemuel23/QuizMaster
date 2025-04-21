@@ -1,4 +1,3 @@
-
 # QuizMaster
 
 ## Project Overview
@@ -37,7 +36,32 @@ npm run dev
 
 ## Deployment
 
-Deploy your application using your preferred hosting platform such as Vercel, Netlify, or GitHub Pages.
+### Deploying to Vercel (Recommended)
+
+1. Create a [Vercel account](https://vercel.com/signup) if you don't have one
+2. Install the Vercel CLI:
+   ```sh
+   npm install -g vercel
+   ```
+3. Login to Vercel:
+   ```sh
+   vercel login
+   ```
+4. From your project directory, run:
+   ```sh
+   vercel
+   ```
+5. Follow the prompts to deploy your application
+
+Your app will be deployed to a URL like `your-project-name.vercel.app`
+
+### Alternative Deployment Options
+
+You can also deploy using other platforms:
+
+- **Netlify**: Deploy directly from your Git repository or using the Netlify CLI
+- **GitHub Pages**: Use GitHub Actions to build and deploy your React application
+- **AWS Amplify**: Deploy and host using Amazon's hosting service
 
 ## Contributing
 
@@ -46,4 +70,3 @@ Deploy your application using your preferred hosting platform such as Vercel, Ne
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
-```
