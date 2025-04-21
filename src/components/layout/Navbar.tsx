@@ -1,14 +1,31 @@
-
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, X, LogIn } from 'lucide-react';
+import { Menu, X, LogIn, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useQuiz } from '@/contexts/QuizContext';
+import { useAuth } from '@/contexts/AuthContext';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useToast } from '@/components/ui/use-toast';
 
 export const Navbar = () => {
-  const { activeUser } = useQuiz();
+  const { user, signOut } = useAuth();
+  const { toast } = useToast();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+      toast({
+        title: "Logged out",
+        description: "You have been successfully logged out.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white/90 backdrop-blur-md shadow-sm border-b">
@@ -20,7 +37,6 @@ export const Navbar = () => {
           <span className="text-2xl font-bold gradient-text">QuizMaster</span>
         </Link>
 
-        {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
           <Link to="/" className="text-foreground hover:text-quiz-primary transition-colors">
             Home
@@ -37,15 +53,16 @@ export const Navbar = () => {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          {activeUser ? (
+          {user ? (
             <div className="flex items-center space-x-3">
-              <span className="text-sm text-muted-foreground">
-                {activeUser.name}
-              </span>
               <Avatar>
-                <AvatarImage src={activeUser.avatar} alt={activeUser.name} />
-                <AvatarFallback>{activeUser.name.substring(0, 2)}</AvatarFallback>
+                <AvatarImage src={user.user_metadata.avatar_url} alt={user.user_metadata.username} />
+                <AvatarFallback>{user.user_metadata.username?.substring(0, 2)}</AvatarFallback>
               </Avatar>
+              <Button variant="ghost" onClick={handleSignOut}>
+                <LogOut className="mr-2 h-4 w-4" />
+                Sign Out
+              </Button>
             </div>
           ) : (
             <Link to="/login">
@@ -57,7 +74,6 @@ export const Navbar = () => {
           )}
         </div>
 
-        {/* Mobile Navigation */}
         <div className="md:hidden flex items-center">
           <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="p-2">
             {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -65,7 +81,6 @@ export const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       {isMenuOpen && (
         <div className="md:hidden absolute top-full left-0 right-0 bg-white/95 backdrop-blur-md border-b shadow-md animate-fade-in z-40">
           <div className="container py-4 flex flex-col space-y-4">
@@ -98,13 +113,13 @@ export const Navbar = () => {
               Leaderboard
             </Link>
             <div className="pt-2 border-t">
-              {activeUser ? (
+              {user ? (
                 <div className="flex items-center space-x-3 p-2">
                   <Avatar>
-                    <AvatarImage src={activeUser.avatar} alt={activeUser.name} />
-                    <AvatarFallback>{activeUser.name.substring(0, 2)}</AvatarFallback>
+                    <AvatarImage src={user.user_metadata.avatar_url} alt={user.user_metadata.username} />
+                    <AvatarFallback>{user.user_metadata.username?.substring(0, 2)}</AvatarFallback>
                   </Avatar>
-                  <span>{activeUser.name}</span>
+                  <span>{user.user_metadata.username}</span>
                 </div>
               ) : (
                 <Link to="/login" onClick={() => setIsMenuOpen(false)}>

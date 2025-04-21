@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { LogIn, User, Lock } from 'lucide-react';
@@ -7,12 +6,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
-import { useQuiz } from '@/contexts/QuizContext';
+import { useAuth } from '@/contexts/AuthContext';
 
 const Login = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { users, setActiveUser } = useQuiz();
+  const { signIn, signUp } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -20,7 +19,7 @@ const Login = () => {
   const [registerEmail, setRegisterEmail] = useState('');
   const [registerPassword, setRegisterPassword] = useState('');
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!email || !password) {
@@ -32,25 +31,22 @@ const Login = () => {
       return;
     }
 
-    // Simple mock login
-    const user = users.find(u => u.email === email);
-    if (user && password === 'password') { // Mock password check
-      setActiveUser(user);
+    try {
+      await signIn(email, password);
       toast({
         title: "Login successful",
-        description: `Welcome back, ${user.name}!`,
+        description: "Welcome back!",
       });
-      navigate('/');
-    } else {
+    } catch (error: any) {
       toast({
         title: "Login failed",
-        description: "Invalid email or password. Try demo accounts: john@example.com, jane@example.com, or alex@example.com with password: password",
+        description: error.message,
         variant: "destructive",
       });
     }
   };
 
-  const handleRegister = (e: React.FormEvent) => {
+  const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (!name || !registerEmail || !registerPassword) {
@@ -62,11 +58,19 @@ const Login = () => {
       return;
     }
 
-    // Mock registration (in a real app, this would create a new user)
-    toast({
-      title: "Registration simulated",
-      description: "In a real app, this would create a new account. For now, use one of the demo accounts to login.",
-    });
+    try {
+      await signUp(registerEmail, registerPassword, name);
+      toast({
+        title: "Registration successful",
+        description: "Please check your email for verification.",
+      });
+    } catch (error: any) {
+      toast({
+        title: "Registration failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    }
   };
 
   return (
