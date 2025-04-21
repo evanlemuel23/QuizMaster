@@ -37,7 +37,7 @@ npm run dev
 
 ## Deployment
 
-Deploy your application using your preferred hosting platform.
+Deploy your application using your preferred hosting platform such as Vercel, Netlify, or GitHub Pages.
 
 ## Contributing
 
@@ -46,3 +46,4 @@ Deploy your application using your preferred hosting platform.
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
+```
