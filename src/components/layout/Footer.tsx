@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Link } from 'react-router-dom';
 
@@ -61,14 +60,25 @@ export const Footer = () => {
           </div>
         </div>
         <div className="border-t mt-8 pt-6 flex flex-col md:flex-row justify-between items-center">
-          <p className="text-sm text-muted-foreground">
-            © {new Date().getFullYear()} QuizMaster. All rights reserved.
-          </p>
+          <div className="flex flex-col items-center md:items-start space-y-2">
+            <p className="text-sm text-muted-foreground">
+              © {new Date().getFullYear()} QuizMaster. All rights reserved.
+            </p>
+            <p className="text-sm text-muted-foreground animate-fade-in hover:text-quiz-primary transition-colors">
+              Developed by Evan Lemuel
+            </p>
+          </div>
           <div className="mt-4 md:mt-0 flex space-x-4">
-            <Link to="/terms" className="text-sm text-muted-foreground hover:text-quiz-primary transition-colors">
+            <Link 
+              to="/terms" 
+              className="text-sm text-muted-foreground hover:text-quiz-primary transition-colors hover:scale-105 transform duration-200"
+            >
               Terms of Service
             </Link>
-            <Link to="/privacy" className="text-sm text-muted-foreground hover:text-quiz-primary transition-colors">
+            <Link 
+              to="/privacy" 
+              className="text-sm text-muted-foreground hover:text-quiz-primary transition-colors hover:scale-105 transform duration-200"
+            >
               Privacy Policy
             </Link>
           </div>
